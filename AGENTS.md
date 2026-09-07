@@ -176,6 +176,14 @@ machine consumption prefer `skills.json`.
 - After editing any `SKILL.md` frontmatter, regenerate the manifest:
   `python3 scripts/build_manifest.py`. Verify it is in sync before
   committing with `python3 scripts/build_manifest.py --check`.
+- The catalogue and plugin checks below read `skills.json`, not the
+  `SKILL.md` files, so a stale manifest makes them answer from stale
+  metadata — regenerate it before running them locally, and that is why
+  `build_manifest.py --check` is the first CI gate. Two readers stay
+  independent on purpose: `scripts/quick_validate.py` parses frontmatter
+  itself, so it validates the source rather than the generator's output,
+  and `install.sh` reads it in bash, so skill linking never depends on
+  `python3`.
 - After adding, renaming, or removing a skill, update both catalogue
   tables by hand — `README.md` and `AGENTS.md` (`## Skill catalogue`) —
   keeping their text identical and each skill under the section matching
