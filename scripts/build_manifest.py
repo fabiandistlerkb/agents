@@ -208,6 +208,16 @@ def build_entry(skill_md: Path) -> dict[str, object]:
         )
     sentence = first_sentence(description)
     when_to_use = fm.get("when_to_use")
+    if isinstance(when_to_use, str) and when_to_use.strip() and activation != "router":
+        # Only the router branch below folds the field into the summary, so on
+        # any other activation it would vanish from skills.json while Claude
+        # Code still appends it to the listing — the menu would then be scored
+        # against text the client never renders. Fail instead of dropping it.
+        raise ValueError(
+            f"{skill_md}: 'when_to_use' is only consumed for 'activation: router'"
+            f" skills (this one is {activation!r}); a non-router summary is a"
+            " truncated first sentence and would silently drop the field"
+        )
     if activation == "router":
         # A router's description is the whole trigger surface of its category;
         # the summary is what the menu A/B in eval-suite/recall shows, so it
