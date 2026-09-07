@@ -39,7 +39,7 @@ that keeps finding nothing while CI is green only burns rotation slots.
 | Previously considered a job | Runs in CI instead |
 |---|---|
 | security-footguns | `roomba-gate` → gitleaks |
-| dead-code (local vars/imports) | `ci.yml` → `ruff check .` (pinned 0.15.8) |
+| dead-code (local vars/imports) | `ci.yml` → `ruff check .` |
 
 What remains in the catalogue is the residual question only: `dead-exports` (an export
 across the package boundary).
@@ -57,16 +57,22 @@ python scripts/check_descriptions.py
 python scripts/check_docs.py
 python scripts/check_plugins.py
 for d in skills/*/; do [ -f "$d/SKILL.md" ] && python3 scripts/quick_validate.py "$d"; done
-uvx ruff@0.15.8 check .
+uvx ruff@latest check .
 python -m compileall -q scripts skills mcp-wiki-server
 uvx --from shellcheck-py shellcheck -S warning \
   install.sh scripts/test_install.sh scripts/roomba-scan.sh eval-suite/run.sh
 bash scripts/test_install.sh
 ```
 
-Use the pinned `ruff@0.15.8`, not whatever `ruff` is on `PATH`. A newer ruff reports
-pre-existing findings in first-party files and would falsify the baseline comparison —
-`ci.yml` pins for the same reason.
+Use `uvx ruff@latest`, not whatever `ruff` is on `PATH` — `ci.yml` installs the newest
+ruff too, and a stale local copy would falsify the baseline comparison. Note which
+version the baseline resolved to (`uvx ruff@latest --version`) and reproduce the run
+with that exact `ruff@X.Y.Z`, so a release landing mid-run cannot read as a finding.
+
+On a WSL host ruff reports none of the `flake8-executable` rules (`EXE001`-`EXE003`),
+whatever the file's real mode — measured on this repo's ext4 checkout, where the bits
+are correct and the same ruff version flags 13 files in CI. A local baseline is blind
+to them, so `ci.yml` decides them alone: never report "ruff is clean" from WSL.
 
 Red or missing baseline → report-only jobs, no code changes.
 
@@ -115,7 +121,7 @@ The catalogue-relevant analogues in this repository are:
 
 | Job | What it means here |
 |---|---|
-| `deps-audit` | pinned versions in `.github/workflows/ci.yml` (`ruff==0.15.8`, `pyyaml>=6`), `mcp-wiki-server/pyproject.toml` (`mcp[cli]>=1.2,<2`), and pinned `rev:` values in any pre-commit config. Action tags are Dependabot's (`.github/dependabot.yml`), so a run should confirm that config still covers them rather than re-checking each tag by hand |
+| `deps-audit` | version constraints in `.github/workflows/ci.yml` (`pyyaml>=6`), `mcp-wiki-server/pyproject.toml` (`mcp[cli]>=1.2,<2`), and pinned `rev:` values in any pre-commit config. Action tags are Dependabot's (`.github/dependabot.yml`), so a run should confirm that config still covers them rather than re-checking each tag by hand |
 | `dead-exports` | skills present in `skills/` but not reachable via `skills.json`, a router, or `.claude-plugin/` |
 | `test-flakiness` | the eval harness under `eval-suite/` |
 

@@ -9,10 +9,11 @@ over every skill; it also works standalone on a skill directory outside this
 repo.
 """
 
-import sys
 import re
-import yaml
+import sys
 from pathlib import Path
+
+import yaml
 
 # Frontmatter keys accepted in a SKILL.md: the Agent Skills format, the
 # client-specific fields Claude Code honors, and the repo-specific catalogue

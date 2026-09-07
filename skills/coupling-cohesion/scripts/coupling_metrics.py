@@ -109,11 +109,11 @@ def compute(
         afferent[dst].add(src)
 
     rows: list[dict] = []
-    for name in components:
+    for name, component in components.items():
         ce = len(efferent[name])
         ca = len(afferent[name])
         instability = ce / (ce + ca) if (ce + ca) > 0 else 0.0
-        abstract = abstractness(components[name])
+        abstract = abstractness(component)
         distance = abs(abstract + instability - 1) if abstract is not None else None
         rows.append(
             {

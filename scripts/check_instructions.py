@@ -27,7 +27,7 @@ INSTRUCTIONS_DIR = REPO_ROOT / "instructions"
 FILENAME = re.compile(r"^(\d{2})-[a-z0-9-]+\.md$")
 # install.sh reads frontmatter with `grep -m1 '^<field>:'`, so a field only
 # counts when it starts its own line; mirror that here rather than parsing YAML.
-FIELD = re.compile(r"^([a-z]+):[ \t]*(.*?)[ \t]*$", re.M)
+FIELD = re.compile(r"^([a-z]+):[ \t]*(.*?)[ \t]*$", re.MULTILINE)
 
 VALID_TARGETS = frozenset({"all", "claude", "codex", "opencode"})
 REQUIRED_FIELDS = ("title", "targets")
