@@ -157,6 +157,16 @@ machine consumption prefer `skills.json`.
     generate it, and no CI check notices a missing one. For Claude, pair
     `command` with `disable-model-invocation: true` in the same frontmatter (the runtime
     realization Claude honors; ignored elsewhere).
+  - `when_to_use` — trigger phrases for a **router**, as a single paragraph.
+    Claude Code appends it to the description in its skill listing (joined
+    with `" - "`, the two capped at 1,536 chars together), so it holds the
+    situations users actually type without spending the router's ≤450-char
+    description budget on them. Codex ignores the key entirely (verified with
+    `codex debug prompt-input`), which is why
+    `scripts/check_descriptions.py` keeps it out of the Codex-facing budgets
+    and gives it Claude's combined cap instead. A router's `skills.json`
+    summary appends it the same way Claude does, so the recall menu in
+    `eval-suite/recall` shows what the client shows.
   - `compatibility` — runtime / language requirements in plain prose.
   - `environments` — comma-separated list of the environments the skill
     belongs to: `coding`, `chat`, or both (e.g. `environments: coding, chat`).

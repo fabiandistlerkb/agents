@@ -4,6 +4,7 @@ category: architecture
 activation: router
 environments: coding
 description: "Use for any question about how software should be structured or whether its structure is sound: organizing a new or existing codebase or project (monolith vs microservices, layered/hexagonal/clean, modules, folders), service boundaries and how services talk, domain modeling (DDD), system diagrams (C4), recording decisions (ADRs), coupling/cohesion review, SQL schema design, architecture checks in CI. Routes to a sub-skill."
+when_to_use: "Use even when the word architecture is absent: how should I structure or organize this project, which modules or folders, is this design sound, two services share a database, draw an overview of how the system fits together, keep a record of past decisions, make CI enforce layering rules, model this domain, design the schema for a new feature."
 ---
 
 # Architecture & design
