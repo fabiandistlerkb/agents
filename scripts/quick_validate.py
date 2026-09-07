@@ -35,6 +35,7 @@ ALLOWED_PROPERTIES = {
     # Client-specific (Claude Code); ignored by other agents
     "argument-hint",
     "disable-model-invocation",
+    "when_to_use",
     # Repo-specific catalogue fields
     "category",
     "activation",
@@ -174,6 +175,18 @@ def validate_skill(skill_path):
                 "≤250 (≤400 for the high-traffic allowlist). Move trigger lists into a "
                 "'## When to use' body section."
             )
+
+    # Claude Code appends 'when_to_use' to the description in the skill listing,
+    # so it reaches the system prompt the same way and carries the same '<'
+    # hazard. Other agents ignore the key; its budget is check_descriptions.py's.
+    when_to_use = frontmatter.get("when_to_use")
+    if when_to_use is not None:
+        if not isinstance(when_to_use, str):
+            return False, f"when_to_use must be a string, got {type(when_to_use).__name__}"
+        if not when_to_use.strip():
+            return False, "'when_to_use' is present but empty"
+        if "<" in when_to_use:
+            return False, "when_to_use cannot contain '<' (it can open a tag in the system prompt)"
 
     # Validate compatibility field if present (optional)
     compatibility = frontmatter.get("compatibility", "")

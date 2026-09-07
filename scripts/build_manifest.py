@@ -155,6 +155,10 @@ def warn(message: str) -> None:
 # Agent-skills spec limit; Claude.ai silently drops skills that exceed it.
 MAX_DESCRIPTION_LENGTH = 1024
 
+# How Claude Code joins `when_to_use` onto the description in its skill listing.
+# The combined length is budgeted in scripts/check_descriptions.py.
+CLAUDE_WHEN_TO_USE_JOINER = " - "
+
 
 def check_strict_yaml(block: str, skill_md: Path) -> None:
     """Reject frontmatter our lenient parser accepts but strict YAML rejects.
@@ -203,11 +207,18 @@ def build_entry(skill_md: Path) -> dict[str, object]:
             f" (got {activation!r})"
         )
     sentence = first_sentence(description)
+    when_to_use = fm.get("when_to_use")
     if activation == "router":
         # A router's description is the whole trigger surface of its category;
         # the summary is what the menu A/B in eval-suite/recall shows, so it
-        # carries all of it, untruncated, rather than a first sentence.
+        # carries all of it, untruncated, rather than a first sentence. When the
+        # router also declares `when_to_use`, that is appended the way Claude
+        # Code appends it to the listing (" - "), so the menu shows the model
+        # exactly the text the client would. Codex ignores the field, so this
+        # only ever adds what one of the two clients really displays.
         summary = re.sub(r"\s+", " ", description).strip()
+        if isinstance(when_to_use, str) and when_to_use.strip():
+            summary += CLAUDE_WHEN_TO_USE_JOINER + re.sub(r"\s+", " ", when_to_use).strip()
     else:
         summary = truncate_summary(sentence)
     if activation != "router" and len(sentence) > SUMMARY_LIMIT:
