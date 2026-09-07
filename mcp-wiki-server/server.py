@@ -13,13 +13,14 @@ Configuration via environment variables:
     WIKI_CACHE_DIR  Where to clone WIKI_GIT_URL (default: tempdir)
 """
 
-from mcp.server.fastmcp import FastMCP
-from pathlib import Path
 import os
 import re
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
+
+from mcp.server.fastmcp import FastMCP
 
 MAX_PAGE_CHARS = 8000
 MAX_QUERY_HITS = 20
@@ -38,6 +39,7 @@ def resolve_wiki_root() -> Path:
             refresh = subprocess.run(
                 ["git", "-C", str(cache), "pull", "--ff-only", "--quiet"],
                 capture_output=True,
+                check=False,
             )
             if refresh.returncode != 0:
                 detail = refresh.stderr.decode("utf-8", errors="replace").strip()

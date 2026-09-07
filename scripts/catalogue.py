@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """The skill catalogue, as the consistency checks read it.
 
 The catalogue lives in `skills.json`, which `scripts/build_manifest.py`

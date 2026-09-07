@@ -110,12 +110,12 @@ def check_agents(plugin: str, errors: list[str]) -> None:
             errors.append(f"{rel}: missing YAML frontmatter")
             continue
         frontmatter = text[4:].split("\n---", 1)[0]
-        m = re.search(r"^name:\s*(\S+)\s*$", frontmatter, re.M)
+        m = re.search(r"^name:\s*(\S+)\s*$", frontmatter, re.MULTILINE)
         if not m:
             errors.append(f"{rel}: frontmatter has no 'name'")
         elif m.group(1) != md.stem:
             errors.append(f"{rel}: frontmatter name {m.group(1)!r} != filename stem {md.stem!r}")
-        if not re.search(r"^description:", frontmatter, re.M):
+        if not re.search(r"^description:", frontmatter, re.MULTILINE):
             errors.append(f"{rel}: frontmatter has no 'description'")
 
 
