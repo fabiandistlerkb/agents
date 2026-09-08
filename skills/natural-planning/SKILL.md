@@ -1,7 +1,6 @@
 ---
 name: natural-planning
 category: workflow
-activation: command
 environments: chat
 description: Walk a project through GTD's Natural Planning Model (purpose -> outcome -> brainstorm -> organize -> next actions) to turn a vague, stuck, or overwhelming project into concrete physical next actions.
 metadata:
