@@ -163,7 +163,6 @@
       "summary": "Walk a project through GTD's Natural Planning Model (purpose -> outcome -> brainstorm -> organize -> next actions) to turn a vague, stuck, or overwhelming project into concrete physical next actions.",
       "category": "workflow",
       "path": "skills/natural-planning/SKILL.md",
-      "activation": "command",
       "environments": [
         "chat"
       ],
