@@ -60,7 +60,9 @@ def check_marketplace(errors: list[str]) -> list[str]:
             continue
         names.append(name)
         if source != f"./plugins/{name}":
-            errors.append(f"marketplace.json: {name}: expected source ./plugins/{name}, got {source!r}")
+            errors.append(
+                f"marketplace.json: {name}: expected source ./plugins/{name}, got {source!r}"
+            )
         manifest = REPO_ROOT / "plugins" / name / ".claude-plugin" / "plugin.json"
         if not manifest.is_file():
             errors.append(f"{name}: missing plugins/{name}/.claude-plugin/plugin.json")
@@ -143,9 +145,13 @@ def main() -> int:
         # claude target ships in neither.
         expected = {e.name for e in members if e.in_target("claude")}
         for s in sorted(expected - bundled):
-            errors.append(f"{plugin}: skills/{s} has category: {plugin} but no symlink in plugins/{plugin}/skills/")
+            errors.append(
+                f"{plugin}: skills/{s} has category: {plugin} but no symlink in plugins/{plugin}/skills/"
+            )
         for s in sorted(bundled - expected):
-            errors.append(f"{plugin}: bundles {s}, but its SKILL.md says category: {categories.get(s, '?')}")
+            errors.append(
+                f"{plugin}: bundles {s}, but its SKILL.md says category: {categories.get(s, '?')}"
+            )
 
     uncovered = set(categories.values()) - set(plugins)
     for c in sorted(uncovered):

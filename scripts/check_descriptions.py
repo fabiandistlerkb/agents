@@ -111,9 +111,7 @@ def main() -> int:
             sys.stderr.write(f"  - {e}\n")
         return 1
 
-    print(
-        f"descriptions within budget (auto total {auto_total}/{AUTO_TOTAL_BUDGET} chars)"
-    )
+    print(f"descriptions within budget (auto total {auto_total}/{AUTO_TOTAL_BUDGET} chars)")
     return 0
 
 

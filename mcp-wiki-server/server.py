@@ -75,7 +75,9 @@ def render(topic: Path, query: str | None, page: str | None) -> str:
         ql = query.lower()
         hits: list[str] = []
         for f in files:
-            for i, line in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
+            for i, line in enumerate(
+                f.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
+            ):
                 if ql in line.lower():
                     rel = f.relative_to(topic)
                     hits.append(f"**{rel}:{i}** — {line.strip()}")
@@ -88,7 +90,11 @@ def render(topic: Path, query: str | None, page: str | None) -> str:
     lines = [f"# {topic.name} pages", ""]
     for f in files:
         first = next(
-            (ln for ln in f.read_text(encoding="utf-8", errors="replace").splitlines() if ln.strip()),
+            (
+                ln
+                for ln in f.read_text(encoding="utf-8", errors="replace").splitlines()
+                if ln.strip()
+            ),
             "",
         )
         lines.append(f"- `{f.relative_to(topic)}` — {first[:100]}")

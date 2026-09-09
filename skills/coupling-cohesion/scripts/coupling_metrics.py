@@ -155,8 +155,7 @@ def render_table(rows: list[dict]) -> str:
         a = "—" if r["A"] is None else f"{r['A']:.2f}"
         d = "—" if r["D"] is None else f"{r['D']:.2f}"
         lines.append(
-            f"| {r['name']} | {r['Ca']} | {r['Ce']} | "
-            f"{r['I']:.2f} | {a} | {d} | {r['zone']} |"
+            f"| {r['name']} | {r['Ca']} | {r['Ce']} | {r['I']:.2f} | {a} | {d} | {r['zone']} |"
         )
     return "\n".join(lines)
 

@@ -38,9 +38,7 @@ AGENTS_ROW = re.compile(r"^\| \[([a-z0-9-]+)\]\(skills/\1/SKILL\.md\) \| (.*) \|
 SECTION_HEADING = re.compile(r"^### .+ \(`([a-z0-9-]+)`\)$")
 
 
-def parse_table(
-    path: Path, pattern: re.Pattern[str]
-) -> tuple[dict[str, str], dict[str, str]]:
+def parse_table(path: Path, pattern: re.Pattern[str]) -> tuple[dict[str, str], dict[str, str]]:
     """Return (skill -> description, skill -> category of enclosing section)."""
     rows: dict[str, str] = {}
     sections: dict[str, str] = {}

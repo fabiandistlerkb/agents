@@ -99,9 +99,7 @@ def validate_skill(skill_path):
         if value is None:
             continue
         if not isinstance(value, str) or value not in allowed:
-            return False, (
-                f"'{field}' must be one of {', '.join(sorted(allowed))} (got {value!r})"
-            )
+            return False, (f"'{field}' must be one of {', '.join(sorted(allowed))} (got {value!r})")
 
     for field, allowed in (("environments", ENVIRONMENTS), ("targets", TARGETS)):
         value = frontmatter.get(field)
