@@ -184,9 +184,17 @@ python3 scripts/check_docs.py               # catalogue tables in README + AGENT
 python3 scripts/check_plugins.py            # plugin symlinks and marketplace entries
 python3 scripts/check_instructions.py       # instruction fragments valid
 ruff check .
+prek run --all-files                        # whitespace, YAML/TOML and ruff hooks
 shellcheck -S warning install.sh scripts/*.sh eval-suite/run.sh
 bash scripts/test_install.sh                # install.sh smoke test in a temp HOME
 ```
+
+The hooks in `.pre-commit-config.yaml` are run by
+[prek](https://github.com/j178/prek) (`uv tool install prek`). Run `prek
+install` once and they fire on every commit; CI runs them too, so a skipped
+hook fails the build rather than landing on `main`. `eval-suite/tasks/` is
+exempt from the whitespace hooks — those `prompt:` blocks reproduce real user
+prompts byte for byte.
 
 `build_manifest.py --check` runs first for a reason: the catalogue and plugin
 checks read `skills.json`, so a stale manifest makes them answer from stale

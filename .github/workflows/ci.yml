@@ -53,6 +53,11 @@ jobs:
       - name: Lint (ruff)
         run: ruff check .
 
+      - name: Hooks in sync (prek)
+        run: |
+          pip install prek
+          prek run --all-files --show-diff-on-failure
+
       - name: Python compiles
         run: python -m compileall -q scripts skills mcp-wiki-server
 
